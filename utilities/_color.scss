@@ -1,0 +1,22 @@
+// $color-black: black;
+// $color-purple: purple;
+// $color-red: red;
+// $color-grey: grey;
+// $colors: ('black': $color-black, 'purple': $color-purple, 'red': $color-red, 'grey': $color-grey);
+
+/**
+ * Color names
+ *
+ * Type: Map
+ */
+
+$iota-utils-color-names: $colors;
+
+/**
+ * Namespace classes
+ *
+ * Type: String
+ */
+
+$iota-utils-color-namespace: 'color-';
+@import 'node_modules/iotacss/utilities/color';

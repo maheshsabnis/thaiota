@@ -1,0 +1,85 @@
+var gulp = require('gulp');
+var browserSync = require('browser-sync').create();
+var sass = require('gulp-sass');
+
+function serve() {
+    browserSync.init({
+        server: './app'
+    });
+    gulp.watch("app/scss/**/*.scss", sass);
+    gulp.watch("app/index.html", index);
+    gulp.watch("app/svg/**/*.svg", svg);
+    gulp.watch("app/*.html").on('change', browserSync.reload);
+}
+
+exports.serve = serve;
+
+// gulp.task('serve', ['sass'],  function() {
+//     browserSync.init({
+//         server: "./dist"
+//     });
+
+//     gulp.watch("app/scss/**/*.scss", ['sass']);
+//     gulp.watch("app/svg/**/*.svg", ['sass']);
+//     gulp.watch("app/index.html", ['index']);
+//     gulp.watch("app/*.html").on('change', browserSync.reload);
+// });
+
+
+// gulp.task('serve', function() {
+//     gulp.watch('./app/*.scss', gulp.series('sass'));
+//     gulp.watch('./app/js/**/*.js', gulp.series('js'));
+// });
+
+//gulp.task('default', gulp.series('sass', 'js', 'watch'));
+
+function sass() {
+    return gulp.src("./**/*.scss")
+        .pipe(sass().on('error', function(err) {
+            console.error(err.message);
+            browserSync.notify(err.message, 3000);
+            this.emit('end');
+        }))
+        .pipe(gulp.dest("dist/css"))
+        .pipe(browserSync.stream());
+}
+exports.sass = sass;
+
+// gulp.task('sass', function() {
+//     return gulp.src("app/scss/*.scss")
+//         .pipe(sass().on('error', function(err) {
+//             console.error(err.message);
+//             browserSync.notify(err.message, 3000);
+//             this.emit('end');
+//         }))
+//         .pipe(gulp.dest("dist/css"))
+//         .pipe(browserSync.stream());
+// });
+
+function svg() {
+    return gulp.src("./**/*.svg")
+        .pipe(gulp.dest("dist/svg"))
+        .pipe(browserSync.stream());
+}
+exports.svg = svg;
+// gulp.task('svg', function() {
+//     return gulp.src("app/svg/**/*.svg")
+//         .pipe(gulp.dest("dist/svg"))
+//         .pipe(browserSync.stream());
+// })
+
+function index() {
+    return gulp.src("app/index.html")
+        .pipe(gulp.dest("dist"))
+        .pipe(browserSync.stream());
+}
+
+exports.index = index;
+
+// gulp.task('index', function() {
+//     return gulp.src("app/index.html")
+//         .pipe(gulp.dest("dist"))
+//         .pipe(browserSync.stream());
+// })
+
+// gulp.task('default', ['serve', 'index', 'sass', 'svg']);
